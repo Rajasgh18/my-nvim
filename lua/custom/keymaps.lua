@@ -1,139 +1,84 @@
 -- lua/custom/keymaps.lua
+-- Loaded last (see the bottom of init.lua), so mappings here win any conflicts.
 
 local map = vim.keymap.set
-local Terminal = require("toggleterm.terminal").Terminal
+local Terminal = require('toggleterm.terminal').Terminal
 
 ---------------------------------------------------------------------
 -- Terminal
 ---------------------------------------------------------------------
-local terminal = Terminal:new({
-  hidden = true,
-  direction = "float",
-})
-
-vim.keymap.set("n", "<leader>tt", function()
-  terminal:toggle()
-end, { desc = "Floating Terminal" })
-
-vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { desc = '[G]oto [D]efinition' })
-
-map("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Exit terminal" })
+local float_term = Terminal:new { hidden = true, direction = 'float' }
+map('n', '<leader>tt', function() float_term:toggle() end, { desc = 'Floating terminal' })
+map('t', '<Esc><Esc>', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })
 
 ---------------------------------------------------------------------
 -- General
 ---------------------------------------------------------------------
-
--- Better Escape
-map("i", "jk", "<Esc>", { desc = "Exit Insert Mode" })
-
--- Save
-map({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR><Esc>", { desc = "Save File" })
-
--- Quit
-map("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
-
--- Force Quit
-map("n", "<leader>Q", "<cmd>q!<CR>", { desc = "Force Quit" })
+map('i', 'jk', '<Esc>', { desc = 'Exit insert mode' })
+map({ 'n', 'i', 'v' }, '<C-s>', '<cmd>w<CR><Esc>', { desc = 'Save file' })
+map('n', '<leader>q', '<cmd>q<CR>', { desc = 'Quit window' })
+map('n', '<leader>Q', '<cmd>qa!<CR>', { desc = 'Force quit all' })
+map('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlight' })
 
 ---------------------------------------------------------------------
--- Better Navigation
+-- Better navigation (keep cursor centered)
 ---------------------------------------------------------------------
-
--- Keep cursor centered
-map("n", "<C-d>", "<C-d>zz")
-map("n", "<C-u>", "<C-u>zz")
-
--- Keep search centered
-map("n", "n", "nzzzv")
-map("n", "N", "Nzzzv")
+map('n', '<C-d>', '<C-d>zz')
+map('n', '<C-u>', '<C-u>zz')
+map('n', 'n', 'nzzzv')
+map('n', 'N', 'Nzzzv')
 
 ---------------------------------------------------------------------
--- Window Navigation
+-- Window navigation
 ---------------------------------------------------------------------
+map('n', '<C-h>', '<C-w>h', { desc = 'Go to left window' })
+map('n', '<C-j>', '<C-w>j', { desc = 'Go to lower window' })
+map('n', '<C-k>', '<C-w>k', { desc = 'Go to upper window' })
+map('n', '<C-l>', '<C-w>l', { desc = 'Go to right window' })
 
-map("n", "<C-h>", "<C-w>h", { desc = "Left Window" })
-map("n", "<C-j>", "<C-w>j", { desc = "Down Window" })
-map("n", "<C-k>", "<C-w>k", { desc = "Up Window" })
-map("n", "<C-l>", "<C-w>l", { desc = "Right Window" })
-
----------------------------------------------------------------------
--- Window Management
----------------------------------------------------------------------
-
-map("n", "<leader>sv", "<C-w>v", { desc = "Vertical Split" })
-map("n", "<leader>sh", "<C-w>s", { desc = "Horizontal Split" })
-map("n", "<leader>se", "<C-w>=", { desc = "Equalize Splits" })
-map("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close Split" })
+-- Resize with arrows
+map('n', '<C-Up>', '<cmd>resize +2<CR>', { desc = 'Increase height' })
+map('n', '<C-Down>', '<cmd>resize -2<CR>', { desc = 'Decrease height' })
+map('n', '<C-Left>', '<cmd>vertical resize -2<CR>', { desc = 'Decrease width' })
+map('n', '<C-Right>', '<cmd>vertical resize +2<CR>', { desc = 'Increase width' })
 
 ---------------------------------------------------------------------
--- Resize Windows
+-- Window management  (<leader>w — moved off <leader>s, which is Search)
 ---------------------------------------------------------------------
-
-map("n", "<C-Up>", "<cmd>resize +2<CR>")
-map("n", "<C-Down>", "<cmd>resize -2<CR>")
-map("n", "<C-Left>", "<cmd>vertical resize -2<CR>")
-map("n", "<C-Right>", "<cmd>vertical resize +2<CR>")
-
----------------------------------------------------------------------
--- Buffers
----------------------------------------------------------------------
-
-map("n", "<S-h>", "<cmd>bprevious<CR>", { desc = "Previous Buffer" })
-map("n", "<S-l>", "<cmd>bnext<CR>", { desc = "Next Buffer" })
-
-map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Delete Buffer" })
+map('n', '<leader>wv', '<C-w>v', { desc = 'Split vertical' })
+map('n', '<leader>ws', '<C-w>s', { desc = 'Split horizontal' })
+map('n', '<leader>we', '<C-w>=', { desc = 'Equalize splits' })
+map('n', '<leader>wc', '<cmd>close<CR>', { desc = 'Close split' })
 
 ---------------------------------------------------------------------
--- Clipboard
+-- Clipboard (system)
 ---------------------------------------------------------------------
-
-map({ "n", "v" }, "<leader>y", '"+y', { desc = "Copy to Clipboard" })
-map("n", "<leader>Y", '"+Y', { desc = "Copy Line" })
-
-map({ "n", "v" }, "<leader>p", '"+p', { desc = "Paste Clipboard" })
+map({ 'n', 'v' }, '<leader>y', '"+y', { desc = 'Yank to system clipboard' })
+map('n', '<leader>Y', '"+Y', { desc = 'Yank line to system clipboard' })
+map({ 'n', 'v' }, '<leader>p', '"+p', { desc = 'Paste from system clipboard' })
 
 ---------------------------------------------------------------------
--- Clear Search Highlight
+-- Explorer (neo-tree)
 ---------------------------------------------------------------------
-
-map("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear Search Highlight" })
-
----------------------------------------------------------------------
--- Neo-tree
----------------------------------------------------------------------
-
-map("n", "<leader>e", "<cmd>Neotree toggle<CR>", {
-  desc = "Explorer",
-  silent = true,
-})
+map('n', '<leader>e', '<cmd>Neotree toggle<CR>', { desc = 'Explorer (toggle)', silent = true })
 
 ---------------------------------------------------------------------
--- Telescope
+-- Find (Telescope) — <leader>f group
 ---------------------------------------------------------------------
-
-map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Find Files" })
-map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Live Grep" })
-map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Buffers" })
-map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Help Tags" })
-
----------------------------------------------------------------------
--- LazyGit
----------------------------------------------------------------------
-
-map("n", "<leader>lg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
+map('n', '<leader>ff', '<cmd>Telescope find_files<CR>', { desc = 'Find files' })
+map('n', '<leader>fg', '<cmd>Telescope live_grep<CR>', { desc = 'Live grep' })
+map('n', '<leader>fb', '<cmd>Telescope buffers<CR>', { desc = 'Find buffers' })
+map('n', '<leader>fh', '<cmd>Telescope help_tags<CR>', { desc = 'Help tags' })
+map('n', '<leader>fr', '<cmd>Telescope oldfiles<CR>', { desc = 'Recent files' })
 
 ---------------------------------------------------------------------
--- Trouble
+-- LSP goto
 ---------------------------------------------------------------------
+map('n', 'gd', require('telescope.builtin').lsp_definitions, { desc = 'Goto definition' })
 
-map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<CR>", {
-  desc = "Diagnostics",
-})
-
----------------------------------------------------------------------
--- Terminal
----------------------------------------------------------------------
-
-map("t", "<Esc><Esc>", [[<C-\><C-n>]], {
-  desc = "Exit Terminal Mode",
-})
+-- NOTE: The following were removed to fix conflicts / duplicates:
+--   * <leader>sv/sh/se/sx (splits)  -> moved to <leader>w* (was clobbering Search)
+--   * <leader>bd (bdelete)          -> now in buffer.lua via mini.bufremove (keeps window)
+--   * <S-h>/<S-l> (buffer cycle)    -> H / L in buffer.lua (BufferLine cycle)
+--   * <leader>lg (lazygit)          -> moved to <leader>gg in lazygit.lua
+--   * <leader>xx (Trouble)          -> defined once in trouble.lua

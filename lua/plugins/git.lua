@@ -1,10 +1,29 @@
--- Adds git related signs to the gutter, as well as utilities for managing changes
--- NOTE: gitsigns is already included in init.lua but contains only the base
--- config. This will add also the recommended keymaps.
+-- ============================================================
+-- GIT — gitsigns (gutter signs + hunk actions), consolidated into one setup.
+-- (Previously split between init.lua and kickstart/plugins/gitsigns.lua, where
+-- the second setup() silently reset the custom signs.)
+-- ============================================================
+local gh = require('config.util').gh
 
-vim.pack.add { 'https://github.com/lewis6991/gitsigns.nvim' }
+vim.pack.add { gh 'lewis6991/gitsigns.nvim' }
 
 require('gitsigns').setup {
+  -- AstroNvim-style thin bar glyphs in the sign column (needs a Nerd Font)
+  signs = {
+    add = { text = '▎' }, ---@diagnostic disable-line: missing-fields
+    change = { text = '▎' }, ---@diagnostic disable-line: missing-fields
+    delete = { text = '' }, ---@diagnostic disable-line: missing-fields
+    topdelete = { text = '' }, ---@diagnostic disable-line: missing-fields
+    changedelete = { text = '▎' }, ---@diagnostic disable-line: missing-fields
+    untracked = { text = '▎' }, ---@diagnostic disable-line: missing-fields
+  },
+  signs_staged = {
+    add = { text = '▎' }, ---@diagnostic disable-line: missing-fields
+    change = { text = '▎' }, ---@diagnostic disable-line: missing-fields
+    delete = { text = '' }, ---@diagnostic disable-line: missing-fields
+    topdelete = { text = '' }, ---@diagnostic disable-line: missing-fields
+    changedelete = { text = '▎' }, ---@diagnostic disable-line: missing-fields
+  },
   on_attach = function(bufnr)
     local gitsigns = require 'gitsigns'
 
@@ -31,11 +50,10 @@ require('gitsigns').setup {
       end
     end, { desc = 'Jump to previous git [c]hange' })
 
-    -- Actions
-    -- visual mode
+    -- Actions (visual)
     map('v', '<leader>hs', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [s]tage hunk' })
     map('v', '<leader>hr', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [r]eset hunk' })
-    -- normal mode
+    -- Actions (normal)
     map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
     map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
     map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
