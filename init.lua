@@ -157,6 +157,8 @@ do
   --   and `:help lua-guide-options`
   vim.o.list = true
   vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+  vim.opt.termguicolors = true
+  vim.opt.showtabline = 2
 
   -- Preview substitutions live, as you type!
   vim.o.inccommand = 'split'
