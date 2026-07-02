@@ -15,6 +15,8 @@ vim.keymap.set("n", "<leader>tt", function()
   terminal:toggle()
 end, { desc = "Floating Terminal" })
 
+vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { desc = '[G]oto [D]efinition' })
+
 map("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Exit terminal" })
 
 ---------------------------------------------------------------------
