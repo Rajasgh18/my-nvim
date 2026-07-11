@@ -29,6 +29,13 @@ vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
 -- Enable break indent
 vim.o.breakindent = true
 
+-- Indentation: use 2 spaces per level (feels compact & normal)
+vim.o.tabstop = 2 -- how many columns a <Tab> counts for
+vim.o.softtabstop = 2 -- how many spaces <Tab>/<BS> insert/delete while editing
+vim.o.shiftwidth = 2 -- spaces per indent step (>>, <<, autoindent)
+vim.o.expandtab = true -- turn tabs into spaces
+vim.o.smartindent = true -- context-aware autoindent for new lines
+
 -- Persistent undo across sessions
 vim.o.undofile = true
 
@@ -49,7 +56,7 @@ vim.o.splitbelow = true
 
 -- Show certain whitespace characters
 vim.o.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
 vim.opt.termguicolors = true
 vim.opt.showtabline = 2
 
